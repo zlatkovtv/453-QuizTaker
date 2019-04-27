@@ -4,4 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="button_border_radius">50dp</dimen>
     <dimen name="default_page_padding">20dp</dimen>
+    <dimen name="text_big">34sp</dimen>
+    <dimen name="text_medium">24sp</dimen>
+    <dimen name="text_small">20sp</dimen>
 </resources>

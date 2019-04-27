@@ -3,50 +3,51 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="buttonStyle">@style/Button.Center.Secondary</item>
+        <item name="editTextStyle">@style/EditText.Center.Secondary</item>
+        <item name="textInputStyle">@style/inputLayoutStyleSecondary</item>
     </style>
 
-    <style name="bigTextSize">
-        <item name="android:textSize">34dp</item>
-    </style>
-    <style name="mediumTextSize">
-        <item name="android:textSize">24dp</item>
-    </style>
-    <style name="smallTextSize">
-        <item name="android:textSize">20dp</item>
+    <style name="PrimaryStyle">
+        <item name="android:buttonStyle">@style/Button.Center.Primary</item>
+        <item name="android:editTextStyle">@style/EditText.Center.Primary</item>
     </style>
 
-    <style name="buttonStylePrimary">
+    <style name="Button.Center" parent="@android:style/Widget.Button">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="EditText.Center" parent="@android:style/Widget.EditText">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="Button.Center.Primary" parent="@style/Button.Center">
         <item name="android:background">@drawable/button_primary</item>
         <item name="android:textColor">@color/colorSecondary</item>
-        <item name="android:textSize">24dp</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:layout_marginBottom">20dp</item>
     </style>
-    <style name="buttonStyleSecondary">
+    <style name="Button.Center.Secondary" parent="@style/Button.Center">
         <item name="android:background">@drawable/button_secondary</item>
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">24dp</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:layout_marginBottom">20dp</item>
     </style>
-    <style name="inputStyleSecondary">
+    <style name="EditText.Center.Secondary" parent="@style/EditText.Center">
         <item name="android:background">@drawable/input_secondary</item>
-        <item name="android:textColor">@color/colorSecondary</item>
-        <item name="android:textColorHint">@color/colorSecondary</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">24dp</item>
-        <item name="android:layout_marginBottom">20dp</item>
     </style>
-    <style name="inputStylePrimary">
+    <style name="EditText.Center.Primary" parent="@style/EditText.Center">
         <item name="android:background">@drawable/input_primary</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textColorHint">@color/colorPrimary</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">24dp</item>
-        <item name="android:layout_marginBottom">20dp</item>
     </style>
+    <style name="inputLayoutStyleSecondary">
+        <item name="android:textColorHint">@color/colorSecondary</item>
+    </style>
+    <style name="inputLayoutStylePrimary">
+        <item name="android:textColorHint">@color/colorPrimary</item>
+    </style>
+
 
 </resources>
