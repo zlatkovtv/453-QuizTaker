@@ -13,6 +13,11 @@
         <item name="textInputStyle">@style/inputLayoutStyleSecondary</item>
     </style>
 
+    <style name="AppTheme.Launcher" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+    </style>
+
     <style name="PrimaryStyle">
         <item name="android:buttonStyle">@style/Button.Center.Primary</item>
         <item name="android:editTextStyle">@style/EditText.Center.Primary</item>

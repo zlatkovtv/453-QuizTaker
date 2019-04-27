@@ -24,10 +24,19 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Make sure this is before calling super.onCreate
+        setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser loggedUser = firebaseAuth.getCurrentUser();
+        // Check if user is exists, and if so, redirect to home
+        if(loggedUser != null) {
+            navigateToHome();
+        }
 
         this.emailInput = findViewById(R.id.email);
         this.passwordInput = findViewById(R.id.password);
