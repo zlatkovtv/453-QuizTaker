@@ -24,8 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:inputType="textEmailAddress"
-                android:hint="Email"
-                android:focusable="true"/>
+                android:hint="Email"/>
 
         </android.support.design.widget.TextInputLayout>
 
