@@ -8,6 +8,7 @@
         <item name="buttonStyle">@style/Button.Center.Secondary</item>
         <item name="editTextStyle">@style/EditText.Center.Secondary</item>
         <item name="textInputStyle">@style/inputLayoutStyleSecondary</item>
+        <item name="errorTextAppearance">@style/errorText</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">
@@ -45,16 +46,25 @@
     </style>
     <style name="EditText.Center.Secondary" parent="@style/EditText.Center">
         <item name="android:background">@drawable/input_secondary</item>
+        <item name="android:textColorHint">@color/colorSecondary</item>
+        <item name="android:textColor">@color/colorSecondary</item>
     </style>
     <style name="EditText.Center.Primary" parent="@style/EditText.Center">
         <item name="android:background">@drawable/input_primary</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
     <style name="inputLayoutStyleSecondary">
         <item name="android:textColorHint">@color/colorSecondary</item>
+        <item name="hintEnabled">false</item>
     </style>
     <style name="inputLayoutStylePrimary">
         <item name="android:textColorHint">@color/colorPrimary</item>
+        <item name="hintEnabled">false</item>
     </style>
 
-
+    <style name="errorText">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>
