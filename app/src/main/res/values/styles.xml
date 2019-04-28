@@ -40,24 +40,29 @@
         <item name="android:background">@drawable/button_primary</item>
         <item name="android:textColor">@color/colorSecondary</item>
     </style>
+
     <style name="Button.Center.Secondary" parent="@style/Button.Center">
         <item name="android:background">@drawable/button_secondary</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
+
     <style name="EditText.Center.Secondary" parent="@style/EditText.Center">
         <item name="android:background">@drawable/input_secondary</item>
         <item name="android:textColorHint">@color/colorSecondary</item>
         <item name="android:textColor">@color/colorSecondary</item>
     </style>
+
     <style name="EditText.Center.Primary" parent="@style/EditText.Center">
         <item name="android:background">@drawable/input_primary</item>
         <item name="android:textColorHint">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
+
     <style name="inputLayoutStyleSecondary">
         <item name="android:textColorHint">@color/colorSecondary</item>
         <item name="hintEnabled">false</item>
     </style>
+
     <style name="inputLayoutStylePrimary">
         <item name="android:textColorHint">@color/colorPrimary</item>
         <item name="hintEnabled">false</item>
@@ -67,4 +72,18 @@
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">18sp</item>
     </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_up_enter_dialog</item>
+        <item name="android:windowExitAnimation">@anim/slide_down_exit_dialog</item>
+    </style>
+
+    <style
+        name="DialogSlideAnim"
+        parent="android:style/Theme.Dialog">
+
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+
+    </style>
+
 </resources>
