@@ -28,6 +28,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setDrawer();
         setNavigationView();
         myDialog = new Dialog(new ContextThemeWrapper(this, R.style.DialogSlideAnim));
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new QuizListFragment()).commit();
+        }
     }
 
     @Override

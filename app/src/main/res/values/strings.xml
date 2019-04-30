@@ -16,4 +16,6 @@
     <string name="help">Help</string>
     <string name="about">About</string>
     <string name="logout">Logout</string>
+
+    <string name="quiz_list_title">Take a look at our quizzes</string>
 </resources>
