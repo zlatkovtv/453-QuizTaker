@@ -1,6 +1,9 @@
 package com.example.quiztaker;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -13,6 +16,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,7 +45,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            popLogoutDialog();
         }
     }
 
@@ -79,13 +84,29 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 changePopupWindow(R.layout.about_popup);
                 break;
             case R.id.logoutButton:
-                changePopupWindow(R.layout.logout_popup);
-                //open dialog for logout
+                popLogoutDialog();
                 break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void popLogoutDialog() {
+        new AlertDialog.Builder(this)
+            .setTitle("Are you sure you want to log out?")
+            .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    FirebaseAuth.getInstance().signOut();
+                    finish();
+                    startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                }
+
+            })
+            .setNegativeButton("No", null)
+            .show();
     }
 
     private void changePopupWindow (int layoutID) {
