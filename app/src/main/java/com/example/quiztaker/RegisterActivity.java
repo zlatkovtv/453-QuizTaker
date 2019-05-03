@@ -15,6 +15,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
 
 public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
@@ -25,7 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout passwordInput;
     private TextInputLayout confirmPasswordInput;
     private ProgressBar progressBar;
-
+    //DatabaseReference ref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Make sure this is before calling super.onCreate
@@ -44,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
         this.progressBar.setVisibility(ProgressBar.INVISIBLE);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        //ref = FirebaseDatabase.getInstance().getReference().child("User");
     }
 
     public void createAccount(String email, String password) {
