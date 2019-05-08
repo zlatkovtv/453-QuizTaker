@@ -87,16 +87,11 @@ public class QuizListFragment extends Fragment {
 
         FloatingActionButton mfab = (FloatingActionButton) view.findViewById(R.id.fab);
         mfab.setOnClickListener(new View.OnClickListener() {
-            String message = "";
             @Override
             public void onClick(View view) {
-                message = "Clicked";
-                //Not sure why this is not working, change intent to QuizCreator
-                /* Intent intent = new Intent(getActivity(), QuizCreator.class);
-                startActivity(intent);*/
-                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getActivity(), QuizCreator.class);
+                startActivity(intent);
                 }
-
         });
 
         return view;

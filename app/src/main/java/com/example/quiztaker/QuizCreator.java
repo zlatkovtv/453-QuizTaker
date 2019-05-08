@@ -23,7 +23,9 @@ public class QuizCreator extends AppCompatActivity {
             String message = "";
             public void onClick(View v) {
                 if(!mquizName.getText().toString().matches("")){
-                    message = "Saved information";
+                    message = "Question 1";
+                    Intent intent = new Intent(QuizCreator.this, QuizQuestionCreator.class);
+                    startActivity(intent);
                 }
                 else{
                     message = "Please enter a quiz name";
@@ -34,7 +36,7 @@ public class QuizCreator extends AppCompatActivity {
         mCancel.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(QuizCreator.this, QuizListFragment.class);
+                Intent intent = new Intent(QuizCreator.this, MainActivity.class);
                 startActivity(intent);
             }
         });
