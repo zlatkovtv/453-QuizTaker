@@ -1,4 +1,4 @@
-package com.example.quiztaker;
+package com.example.quiztaker.models;
 
 public class QuizData {
     private String quizName;

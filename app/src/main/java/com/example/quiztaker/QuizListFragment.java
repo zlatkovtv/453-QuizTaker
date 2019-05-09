@@ -11,8 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.example.quiztaker.models.QuizData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -56,7 +56,7 @@ public class QuizListFragment extends Fragment {
                                 mQuizList.add(new QuizData((String) document.get("quizTitle"), (String) document.get("quizCreator")));
                                 Log.i(TAG, "Index: ");
                             }
-                            QuizListAdapter mAdapter = new QuizListAdapter(view.getContext(), mQuizList);
+                            QuizListAdapter mAdapter = new QuizListAdapter(getActivity(), mQuizList);
                             mRecyclerView.setAdapter(mAdapter);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
