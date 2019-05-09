@@ -4,6 +4,11 @@ public class QuizOption {
     private String optionName;
     private boolean isCorrect;
 
+    public QuizOption(String name, boolean isCorrect) {
+        this.optionName = name;
+        this.isCorrect = isCorrect;
+    }
+
     public String getOptionName() {
         return optionName;
     }
