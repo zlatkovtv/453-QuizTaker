@@ -27,7 +27,6 @@ public class QuizListFragment extends Fragment {
     private static final String TAG = "QuizListFragment";
     RecyclerView mRecyclerView;
     List<QuizData> mQuizList;
-    QuizData quizData;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
