@@ -54,7 +54,13 @@ public class QuizTakingFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            this.quizName = bundle.getString("ID");
+        }
     }
 
     @Override
