@@ -25,6 +25,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,16 +41,7 @@ public class QuizTakingFragment extends Fragment {
     private LinearLayout container;
 
     public QuizTakingFragment() {
-        // Mock id
-        this.quizName = "Quiz 1";
-        this.currentQuestionIndex = 0;
-        this.questions = new ArrayList<>();
-        this.results = new ArrayList<>();
-        this.questionsRef = FirebaseFirestore
-                .getInstance()
-                .collection("Quizzes")
-                .document(this.quizName)
-                .collection("Questions");
+
     }
 
     @Override
@@ -61,6 +53,15 @@ public class QuizTakingFragment extends Fragment {
         if (bundle != null) {
             this.quizName = bundle.getString("ID");
         }
+
+        this.currentQuestionIndex = 0;
+        this.questions = new ArrayList<>();
+        this.results = new ArrayList<>();
+        this.questionsRef = FirebaseFirestore
+                .getInstance()
+                .collection("Quizzes")
+                .document(this.quizName)
+                .collection("Questions");
     }
 
     @Override
@@ -84,9 +85,18 @@ public class QuizTakingFragment extends Fragment {
                             questions.add(new QuizQuestion(document.getId(), document.get("questionString").toString(), new ArrayList<QuizOption>()));
                         }
 
-                        getNextOptions();
+                        if(questions.size() == 0) {
+                            popNoQuestionsToast();
+                        } else {
+                            getNextOptions();
+                        }
                     }
         });
+    }
+
+    private void popNoQuestionsToast() {
+        Toast.makeText(getActivity(), "Quiz has no questions.",
+                Toast.LENGTH_LONG).show();
     }
 
     private void getNextOptions() {
@@ -106,7 +116,13 @@ public class QuizTakingFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()) {
                             QuerySnapshot queryDocumentSnapshots = task.getResult();
+                            List<QueryDocumentSnapshot> list = new ArrayList<>();
                             for (QueryDocumentSnapshot document: queryDocumentSnapshots) {
+                                list.add(document);
+                            }
+
+                            Collections.shuffle(list);
+                            for (QueryDocumentSnapshot document: list) {
                                 String optionText = document.get("optionName").toString();
                                 boolean isCorrect = (boolean) document.get("isCorrect");
                                 addButton(optionText, isCorrect);
