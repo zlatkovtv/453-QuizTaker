@@ -44,6 +44,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+            myDialog.dismiss();
         } else {
             popLogoutDialog();
         }
