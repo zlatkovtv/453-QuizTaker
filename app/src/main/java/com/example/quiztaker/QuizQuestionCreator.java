@@ -77,16 +77,16 @@ public class QuizQuestionCreator extends AppCompatActivity {
                     answer1.put("isCorrect", true);
 
                     Map<String, Object> answer2 = new HashMap<>();
-                    answer1.put("optionName", inputfalseAnswer1);
-                    answer1.put("isCorrect", false);
+                    answer2.put("optionName", inputfalseAnswer1);
+                    answer2.put("isCorrect", false);
 
                     Map<String, Object> answer3 = new HashMap<>();
-                    answer1.put("optionName", inputfalseAnswer2);
-                    answer1.put("isCorrect", false);
+                    answer3.put("optionName", inputfalseAnswer2);
+                    answer3.put("isCorrect", false);
 
                     Map<String, Object> answer4 = new HashMap<>();
-                    answer1.put("optionName", inputfalseAnswer3);
-                    answer1.put("isCorrect", false);
+                    answer4.put("optionName", inputfalseAnswer3);
+                    answer4.put("isCorrect", false);
 
                     ref1.document(quizid).collection("Questions").document("Question " + (count - 1)).set(info);
                     ref1.document(quizid).collection("Questions").document("Question " + (count - 1)).collection("Options").document("Option 1").set(answer1);
