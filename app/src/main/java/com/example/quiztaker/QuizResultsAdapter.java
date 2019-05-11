@@ -9,6 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+/**
+ * Adapter for the GridView in the Results Fragment
+ */
 public class QuizResultsAdapter extends BaseAdapter {
     private Context context;
     private boolean[] results;
@@ -23,13 +26,20 @@ public class QuizResultsAdapter extends BaseAdapter {
     }
 
     public Object getItem(int position) {
-        return null;
+        return results[position];
     }
 
     public long getItemId(int position) {
         return 0;
     }
 
+    /**
+     * Sets ImageViews in the GridView corresponding to the results array
+     * @param position Index of the result
+     * @param convertView
+     * @param parent
+     * @return
+     */
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
 

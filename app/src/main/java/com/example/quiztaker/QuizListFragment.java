@@ -26,7 +26,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ *
+ */
 public class QuizListFragment extends BaseFragment {
     private static final String TAG = "QuizListFragment";
     private RecyclerView mRecyclerView;
@@ -43,6 +45,13 @@ public class QuizListFragment extends BaseFragment {
 
     }
 
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view =  inflater.inflate(R.layout.fragment_quiz_list, container, false);

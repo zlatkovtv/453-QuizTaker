@@ -12,7 +12,6 @@ import android.widget.TextView;
 public class QuizResultsFragment extends BaseFragment implements View.OnClickListener {
     private boolean[] results;
     private boolean[] correct;
-
     private TextView resultsMessage;
     private GridView iconContainer;
     private Button closeResultsButton;
@@ -35,15 +34,29 @@ public class QuizResultsFragment extends BaseFragment implements View.OnClickLis
         }
 
         View view = inflater.inflate(R.layout.fragment_quiz_results, container, false);
-        this.resultsMessage = view.findViewById(R.id.results_message);
-        this.iconContainer = view.findViewById(R.id.icon_container);
-        this.closeResultsButton = view.findViewById(R.id.button_close_results);
+        getViews(view);
         this.closeResultsButton.setOnClickListener(this);
         this.iconContainer.setAdapter(new QuizResultsAdapter(getContext(), results));
         this.resultsMessage.setText(getMessage(results.length, correct.length));
         return view;
     }
 
+    /**
+     * Gets views needed for this fragment
+     * @param view
+     */
+    private void getViews(View view) {
+        this.resultsMessage = view.findViewById(R.id.results_message);
+        this.iconContainer = view.findViewById(R.id.icon_container);
+        this.closeResultsButton = view.findViewById(R.id.button_close_results);
+    }
+
+    /**
+     * Gets the title of the fragment depending on the ratio of the total and correct answers
+     * @param total The total number of answers
+     * @param correct Only the answers that are "true"
+     * @return
+     */
     private String getMessage(int total, int correct) {
         double percent = correct / (double) total;
         if(percent  == 0) {
@@ -65,6 +78,10 @@ public class QuizResultsFragment extends BaseFragment implements View.OnClickLis
         return null;
     }
 
+    /**
+     * Closes the fragment and navigates to the Quiz List Fragment
+     * @param view
+     */
     public void closeResults(View view) {
         Fragment frag = new QuizListFragment();
         getActivity()

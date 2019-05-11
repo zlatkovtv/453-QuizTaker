@@ -25,7 +25,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
-
     private TextInputLayout emailInput;
     private TextInputLayout firstNameInput;
     private TextInputLayout lastNameInput;
@@ -35,25 +34,32 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Make sure this is before calling super.onCreate
         setTheme(R.style.AppTheme_NoActionBar);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        getViews();
+        this.progressBar.setVisibility(ProgressBar.INVISIBLE);
+        this.firebaseAuth = FirebaseAuth.getInstance();
+        this.db = FirebaseFirestore.getInstance();
+    }
 
+    /**
+     * Gets views needed in this activity
+     */
+    private void getViews() {
         this.emailInput = findViewById(R.id.email);
         this.firstNameInput = findViewById(R.id.firstname);
         this.lastNameInput = findViewById(R.id.lastname);
         this.passwordInput = findViewById(R.id.password);
         this.confirmPasswordInput = findViewById(R.id.confirm_password);
-
         this.progressBar = findViewById(R.id.progress_bar);
-        this.progressBar.setVisibility(ProgressBar.INVISIBLE);
-
-        this.firebaseAuth = FirebaseAuth.getInstance();
-        this.db = FirebaseFirestore.getInstance();
     }
 
+    /**
+     * Creates a new FirebaseUser and logs in
+     * @param email The validated email
+     * @param password The validated password
+     */
     public void createAccount(String email, String password) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -61,25 +67,31 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
-                    setUserNames(user);
+                    String firstName = firstNameInput.getEditText().getText().toString();
+                    String lastName = lastNameInput.getEditText().getText().toString();
+                    setUserNames(firstName, lastName);
                     setUserRole(user);
                     navigateToHome();
-                } else {
-                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(ProgressBar.INVISIBLE);
+                    return;
                 }
+
+                Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                        Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
             }
         });
     }
 
-    private void setUserNames(FirebaseUser user) {
-        String firstName = firstNameInput.getEditText().getText().toString();
-        String lastName = lastNameInput.getEditText().getText().toString();
+    /**
+     * Sets Firstname and Lastname of the FirebaseUser
+     * @param firstName
+     * @param lastName
+     */
+    private void setUserNames(String firstName, String lastName) {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(firstName + " " + lastName)
                 .build();
-        user.updateProfile(profileUpdates)
+        firebaseAuth.getCurrentUser().updateProfile(profileUpdates)
         .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -87,6 +99,10 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Creates a document in the Users collection with the "isAdmin" field
+     * @param user
+     */
     private void setUserRole(FirebaseUser user) {
         String userId = user.getUid();
         Map<String, Object> userRole = new HashMap<>();
@@ -94,10 +110,17 @@ public class RegisterActivity extends AppCompatActivity {
         db.collection("Users").document(userId).set(userRole);
     }
 
+    /**
+     * Navigates to the Home Activity
+     */
     private void navigateToHome() {
         startActivity(new Intent(this, HomeActivity.class));
     }
 
+    /**
+     * Validates email, names and passwords and logs in
+     * @param view
+     */
     public void validateInputs(View view) {
         progressBar.setVisibility(ProgressBar.VISIBLE);
         if (!validateEmail() || !validateNames() || !validatePasswords()) {

@@ -36,7 +36,6 @@ public class QuizTakingFragment extends BaseFragment {
     private List<QuizQuestion> questions;
     private int currentQuestionIndex;
     private List<Boolean> results;
-
     private TextView questionName;
     private LinearLayout container;
 
@@ -77,28 +76,35 @@ public class QuizTakingFragment extends BaseFragment {
 
     private void getQuestions() {
         questionsRef
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (QueryDocumentSnapshot document: queryDocumentSnapshots) {
-                            questions.add(new QuizQuestion(document.getId(), document.get("questionString").toString(), new ArrayList<QuizOption>()));
-                        }
-
-                        if(questions.size() == 0) {
-                            popNoQuestionsToast();
-                        } else {
-                            getNextOptions();
-                        }
+            .get()
+            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    for (QueryDocumentSnapshot document: queryDocumentSnapshots) {
+                        questions.add(new QuizQuestion(document.getId(), document.get("questionString").toString(), new ArrayList<QuizOption>()));
                     }
+
+                    if(questions.size() == 0) {
+                        popNoQuestionsToast();
+                        return;
+                    }
+
+                    getNextOptions();
+                }
         });
     }
 
+    /**
+     * Pops a toast if quiz has no questions
+     */
     private void popNoQuestionsToast() {
         Toast.makeText(getActivity(), "Quiz has no questions.",
                 Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * Gets the options of the next unanswered question, in a random order
+     */
     private void getNextOptions() {
         if((container).getChildCount() > 0) {
             (container).removeAllViews();
@@ -136,6 +142,11 @@ public class QuizTakingFragment extends BaseFragment {
                 });
     }
 
+    /**
+     * Adds a button corresponding to a possible option
+     * @param optionText The text of the button
+     * @param isCorrect Whether it is correct or not
+     */
     private void addButton(String optionText, boolean isCorrect) {
         ContextThemeWrapper wrapper = new ContextThemeWrapper(getActivity(), R.style.Button_Center_Primary);
         Button button = new Button(wrapper, null, 0);
@@ -165,6 +176,11 @@ public class QuizTakingFragment extends BaseFragment {
         this.container.addView(button);
     }
 
+    /**
+     * When an option/button is clicked, this method is invoked.
+     * Stores the answered value in a list
+     * @param answer The answer as a boolean value (whether it is correct or not)
+     */
     private void answer(boolean answer) {
         results.add(answer);
         currentQuestionIndex++;
@@ -179,6 +195,11 @@ public class QuizTakingFragment extends BaseFragment {
         getNextOptions();
     }
 
+    /**
+     * Navigates to the results view
+     * @param results All results to be passed to results fragment
+     * @param correct Correct results to be passed to results fragment
+     */
     private void goToResults(boolean[] results, boolean[] correct) {
         Fragment frag = new QuizResultsFragment();
         Bundle args = new Bundle();
@@ -193,6 +214,11 @@ public class QuizTakingFragment extends BaseFragment {
                 .commit();
     }
 
+    /**
+     * Converts a list of booleans to an array of booleans
+     * @param booleanList
+     * @return
+     */
     private boolean[] toPrimitiveArray(final List<Boolean> booleanList) {
         final boolean[] primitives = new boolean[booleanList.size()];
         int index = 0;
