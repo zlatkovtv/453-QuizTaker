@@ -20,6 +20,8 @@
 
     <string name="quiz_list_title">Take a look at our quizzes</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="quiz_results_bad">Oops! That could have gone better...</string>
+    <string name="quiz_results_ok">That was OK, but we feel like there is room for improvement</string>
+    <string name="quiz_results_good">That was impressive!</string>
+    <string name="quiz_results_excellent">Woah! You got everything correct!</string>
 </resources>

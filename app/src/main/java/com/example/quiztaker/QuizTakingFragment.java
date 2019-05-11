@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class QuizTakingFragment extends Fragment {
+public class QuizTakingFragment extends BaseFragment {
     private String quizName;
     private CollectionReference questionsRef;
     private List<QuizQuestion> questions;
@@ -143,6 +143,7 @@ public class QuizTakingFragment extends Fragment {
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, getResources().getDisplayMetrics());
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, height);
         lp.setMargins(0, 0, 0, 20);
+        button.setElevation(8);
         button.setLayoutParams(lp);
 
         if(isCorrect) {
@@ -171,13 +172,38 @@ public class QuizTakingFragment extends Fragment {
             List<Boolean> correct = results.stream()
                     .filter(line -> line == true)
                     .collect(Collectors.toList());
-            String message = String.format("You got %d out of %d correct", correct.size(), results.size());
-            Toast.makeText(getActivity(), message,
-                    Toast.LENGTH_LONG).show();
+            goToResults(toPrimitiveArray(results), toPrimitiveArray(correct));
             return;
         }
 
         getNextOptions();
     }
 
+    private void goToResults(boolean[] results, boolean[] correct) {
+        Fragment frag = new QuizResultsFragment();
+        Bundle args = new Bundle();
+        args.putBooleanArray("results", results);
+        args.putBooleanArray("correct", correct);
+        frag.setArguments(args);
+        getActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, frag)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private boolean[] toPrimitiveArray(final List<Boolean> booleanList) {
+        final boolean[] primitives = new boolean[booleanList.size()];
+        int index = 0;
+        for (Boolean object : booleanList) {
+            primitives[index++] = object;
+        }
+        return primitives;
+    }
+
+    @Override
+    public void onBackPressed(){
+//        getActivity().getSupportFragmentManager().popBackStack();
+    }
 }

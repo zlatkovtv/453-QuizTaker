@@ -15,9 +15,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
+    private final boolean IS_ADMIN = false;
+
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore db;
 
     private TextInputLayout emailInput;
     private TextInputLayout firstNameInput;
@@ -43,7 +50,8 @@ public class RegisterActivity extends AppCompatActivity {
         this.progressBar = findViewById(R.id.progress_bar);
         this.progressBar.setVisibility(ProgressBar.INVISIBLE);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        this.firebaseAuth = FirebaseAuth.getInstance();
+        this.db = FirebaseFirestore.getInstance();
     }
 
     public void createAccount(String email, String password) {
@@ -53,9 +61,9 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
-                    user = setUserNames(user);
+                    setUserNames(user);
+                    setUserRole(user);
                     navigateToHome();
-
                 } else {
                     Toast.makeText(RegisterActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
@@ -65,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private FirebaseUser setUserNames(FirebaseUser user) {
+    private void setUserNames(FirebaseUser user) {
         String firstName = firstNameInput.getEditText().getText().toString();
         String lastName = lastNameInput.getEditText().getText().toString();
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -77,8 +85,13 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
             }
         });
+    }
 
-        return FirebaseAuth.getInstance().getCurrentUser();
+    private void setUserRole(FirebaseUser user) {
+        String userId = user.getUid();
+        Map<String, Object> userRole = new HashMap<>();
+        userRole.put("isAdmin", IS_ADMIN);
+        db.collection("Users").document(userId).set(userRole);
     }
 
     private void navigateToHome() {
@@ -154,5 +167,11 @@ public class RegisterActivity extends AppCompatActivity {
         this.passwordInput.setError(null);
         this.confirmPasswordInput.setError(null);
         return true;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        startActivity(new Intent(this, LoginActivity.class));
     }
 }

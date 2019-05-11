@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class QuizListFragment extends Fragment {
+public class QuizListFragment extends BaseFragment {
     private static final String TAG = "QuizListFragment";
     private RecyclerView mRecyclerView;
     private FloatingActionButton mfab;
