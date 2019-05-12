@@ -45,6 +45,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onDismiss(DialogInterface dialog) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (getSupportFragmentManager().findFragmentById(R.id.changeProfileFragment) != null) {
+            ft.remove(getSupportFragmentManager().findFragmentById(R.id.changeProfileFragment));
+            ft.commit();
+        }
         if (getSupportFragmentManager().findFragmentById(R.id.changePasswordFragment) != null) {
             ft.remove(getSupportFragmentManager().findFragmentById(R.id.changePasswordFragment));
             ft.commit();

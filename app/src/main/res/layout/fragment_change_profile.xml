@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@drawable/rounded_corner"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_gravity="center"
+        android:background="@drawable/rounded_top_corner"
+        android:gravity="center"
+        android:text="Change Profile"
+        android:textColor="@color/colorSecondary"
+        android:textSize="@dimen/text_big"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView_changeProfile"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/profile_icon" />
+
+    <EditText
+        android:id="@+id/editText_changeFirstName"
+        android:layout_width="275dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:hint="First Name" />
+
+    <EditText
+        android:id="@+id/editText_changeLastName"
+        android:layout_width="275dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:hint="Last Name" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/Button_changeProfileCancel"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="25dp"
+            android:text="CANCEL" />
+
+        <Button
+            android:id="@+id/Button_changeProfileConfirm"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="0dp"
+            android:text="CONFIRM" />
+    </LinearLayout>
+
+</LinearLayout>

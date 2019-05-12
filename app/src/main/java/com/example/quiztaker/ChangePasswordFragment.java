@@ -51,9 +51,6 @@ public class ChangePasswordFragment extends Fragment {
                         AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword.getText().toString());
                         user.reauthenticate(credential);
                     }
-                    //else {
-                    //    Toast.makeText(view.getContext(), "Current password field is empty", Toast.LENGTH_SHORT).show();
-                    //}
 
                     if (newPassword.getText().toString().equals("") || confirmNewPassword.getText().toString().equals("") || currentPassword.getText().toString().equals(""))
                         Toast.makeText(view.getContext(), "Missing field/s.", Toast.LENGTH_SHORT).show();
