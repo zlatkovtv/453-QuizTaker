@@ -5,5 +5,9 @@ package com.example.quiztaker;
  * Used in all fragments that implement it to handle the back pressed button.
  */
 public interface OnBackPressed {
-    void onBackPressed();
+    /**
+     *
+     * @return Returns whether event is handled in ths method
+     */
+    boolean onBackPressed();
 }

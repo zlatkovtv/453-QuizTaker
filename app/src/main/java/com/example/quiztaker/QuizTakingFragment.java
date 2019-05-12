@@ -27,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 
@@ -35,7 +36,7 @@ public class QuizTakingFragment extends BaseFragment {
     private CollectionReference questionsRef;
     private List<QuizQuestion> questions;
     private int currentQuestionIndex;
-    private List<Boolean> results;
+    private Stack<Boolean> results;
     private TextView questionName;
     private LinearLayout container;
 
@@ -55,7 +56,7 @@ public class QuizTakingFragment extends BaseFragment {
 
         this.currentQuestionIndex = 0;
         this.questions = new ArrayList<>();
-        this.results = new ArrayList<>();
+        this.results = new Stack<>();
         this.questionsRef = FirebaseFirestore
                 .getInstance()
                 .collection("Quizzes")
@@ -182,7 +183,7 @@ public class QuizTakingFragment extends BaseFragment {
      * @param answer The answer as a boolean value (whether it is correct or not)
      */
     private void answer(boolean answer) {
-        results.add(answer);
+        results.push(answer);
         currentQuestionIndex++;
         if(currentQuestionIndex >= questions.size()) {
             List<Boolean> correct = results.stream()
@@ -229,7 +230,16 @@ public class QuizTakingFragment extends BaseFragment {
     }
 
     @Override
-    public void onBackPressed(){
-//        getActivity().getSupportFragmentManager().popBackStack();
+    public boolean onBackPressed(){
+        if(currentQuestionIndex == 0) {
+            getActivity().getSupportFragmentManager().popBackStack();
+            return true;
+        }
+
+        results.pop();
+        currentQuestionIndex--;
+        getNextOptions();
+
+        return true;
     }
 }

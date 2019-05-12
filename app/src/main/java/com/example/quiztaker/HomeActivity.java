@@ -42,24 +42,48 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void tellFragments(){
+    /**
+     * Tell all fragments to invoke their onBackPressed method
+     * @return If at least one fragment handles the event, return true, else false
+     */
+    private boolean tellFragments(){
+        boolean handled = false;
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         for(Fragment f : fragments){
             if(f != null && f instanceof BaseFragment)
-                ((BaseFragment)f).onBackPressed();
+                handled = ((BaseFragment)f).onBackPressed();
+            if(handled) {
+                break;
+            }
         }
+
+        return handled;
     }
 
+    /**
+     * Passes on to active fragment. If event is not handled there, executes this logic
+     */
     @Override
     public void onBackPressed() {
-        // We can see which fragment is selected and act on it that way
-        tellFragments();
+        boolean handled = tellFragments();
+        if(handled) {
+            return;
+        }
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
             myDialog.dismiss();
         } else {
             popLogoutDialog();
         }
+    }
+
+    public BaseFragment getActiveFragment() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            return null;
+        }
+        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        return (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
 
     private void setDrawer() {

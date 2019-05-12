@@ -133,4 +133,13 @@ public class QuizListFragment extends BaseFragment {
 
         return view;
     }
+
+    /**
+     * Leave empty, as this is default fragment and the event needs to be handled by Home Activity
+     * @return
+     */
+    @Override
+    public boolean onBackPressed() {
+        return false;
+    }
 }

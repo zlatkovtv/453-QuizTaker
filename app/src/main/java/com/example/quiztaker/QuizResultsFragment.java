@@ -41,6 +41,12 @@ public class QuizResultsFragment extends BaseFragment implements View.OnClickLis
         return view;
     }
 
+    @Override
+    public boolean onBackPressed() {
+        navigateToQuizList();
+        return true;
+    }
+
     /**
      * Gets views needed for this fragment
      * @param view
@@ -83,6 +89,10 @@ public class QuizResultsFragment extends BaseFragment implements View.OnClickLis
      * @param view
      */
     public void closeResults(View view) {
+        navigateToQuizList();
+    }
+
+    private void navigateToQuizList() {
         Fragment frag = new QuizListFragment();
         getActivity()
                 .getSupportFragmentManager()

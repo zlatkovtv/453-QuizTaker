@@ -10,7 +10,7 @@ import android.view.ViewGroup;
  * Fragment used as base class for all other fragments,
  * used for the OnBackPressed interface to handle back presses across all fragments
  */
-public class BaseFragment extends Fragment implements OnBackPressed {
+public abstract class BaseFragment extends Fragment implements OnBackPressed {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,5 +21,5 @@ public class BaseFragment extends Fragment implements OnBackPressed {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    public void onBackPressed() {}
+    public abstract boolean onBackPressed();
 }
