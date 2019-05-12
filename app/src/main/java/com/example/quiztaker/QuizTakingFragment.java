@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class QuizTakingFragment extends BaseFragment {
     private Stack<Boolean> results;
     private TextView questionName;
     private LinearLayout container;
+    private ProgressBar progressBar;
 
     public QuizTakingFragment() {
 
@@ -71,6 +73,8 @@ public class QuizTakingFragment extends BaseFragment {
 
         this.questionName = view.findViewById(R.id.questionName);
         this.container = view.findViewById(R.id.container);
+        this.progressBar = view.findViewById(R.id.question_spinner);
+        this.progressBar.setVisibility(ProgressBar.VISIBLE);
         this.getQuestions();
         return view;
     }
@@ -87,6 +91,7 @@ public class QuizTakingFragment extends BaseFragment {
 
                     if(questions.size() == 0) {
                         popNoQuestionsToast();
+                        progressBar.setVisibility(ProgressBar.INVISIBLE);
                         return;
                     }
 
@@ -107,6 +112,7 @@ public class QuizTakingFragment extends BaseFragment {
      * Gets the options of the next unanswered question, in a random order
      */
     private void getNextOptions() {
+        progressBar.setVisibility(ProgressBar.VISIBLE);
         if((container).getChildCount() > 0) {
             (container).removeAllViews();
         }
@@ -135,10 +141,10 @@ public class QuizTakingFragment extends BaseFragment {
                                 addButton(optionText, isCorrect);
                             }
 
+                            progressBar.setVisibility(ProgressBar.INVISIBLE);
                         } else {
-                            Exception a = task.getException();
+                            progressBar.setVisibility(ProgressBar.INVISIBLE);
                         }
-
                     }
                 });
     }
