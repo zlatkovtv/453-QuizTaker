@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,7 +20,7 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
 
     private DrawerLayout drawer;
     private Dialog myDialog;
@@ -33,10 +34,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setDrawer();
         setNavigationView();
         myDialog = new Dialog(new ContextThemeWrapper(this, R.style.DialogSlideAnim));
+        myDialog.setOnDismissListener(this);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new QuizListFragment()).commit();
+        }
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (getSupportFragmentManager().findFragmentById(R.id.changePasswordFragment) != null) {
+            ft.remove(getSupportFragmentManager().findFragmentById(R.id.changePasswordFragment));
+            ft.commit();
         }
     }
 
@@ -96,8 +107,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void popLogoutDialog() {
         new AlertDialog.Builder(this)
             .setTitle("Are you sure you want to log out?")
-            .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-            {
+            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     FirebaseAuth.getInstance().signOut();
