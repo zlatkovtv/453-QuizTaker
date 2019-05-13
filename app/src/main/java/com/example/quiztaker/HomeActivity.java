@@ -17,13 +17,28 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
 
     private DrawerLayout drawer;
     private Dialog myDialog;
+    private ImageView profilePhoto;
+    private String imageURL;
+    private TextView fistName, lastName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +48,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_home);
         setDrawer();
         setNavigationView();
+        getProfileFromDatabase();
         myDialog = new Dialog(new ContextThemeWrapper(this, R.style.DialogSlideAnim));
         myDialog.setOnDismissListener(this);
 
@@ -40,6 +56,38 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new QuizListFragment()).commit();
         }
+    }
+
+    public void getProfileFromDatabase() {
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DocumentReference documentReference = firebaseFirestore.collection("Users").document(user.getUid());
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        if (document.getString("imageURL").equals("default"))
+                            profilePhoto.setImageResource(R.drawable.profile_icon);
+                        else {
+                            imageURL = document.getString("imageURL");
+                            Toast.makeText(HomeActivity.this, imageURL, Toast.LENGTH_LONG).show();
+                            Glide.with(HomeActivity.this).load(imageURL).into(profilePhoto);
+                            /*
+                            Picasso.get()
+                                    .load(document.getString("imageURL"))
+                                    .fit()
+                                    .centerCrop()
+                                    .into(profilePhoto);
+                             */
+                        }
+                        fistName.setText(document.getString("firstName"));
+                        lastName.setText(document.getString("lastName"));
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -60,7 +108,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
             myDialog.dismiss();
-        } else {
+        }
+        else if (myDialog.isShowing()){
+            myDialog.dismiss();
+        }
+        else {
             popLogoutDialog();
         }
     }
@@ -78,6 +130,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void setNavigationView() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        profilePhoto = headerView.findViewById(R.id.profilePhoto);
+        fistName = headerView.findViewById(R.id.textView_firstName);
+        lastName = headerView.findViewById(R.id.textView_lastName);
     }
 
     @Override

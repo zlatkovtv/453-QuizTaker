@@ -15,6 +15,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
@@ -54,6 +60,8 @@ public class RegisterActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     user = setUserNames(user);
+
+                    addToDatabase(user);
                     navigateToHome();
 
                 } else {
@@ -65,9 +73,20 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    private void addToDatabase(FirebaseUser user) {
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        Map<String, Object> map = new HashMap<>();
+        map.put("firstName", firstNameInput.getEditText().getText().toString());
+        map.put("lastName", lastNameInput.getEditText().getText().toString());
+        map.put("imageURL", "default");
+        map.put("isAdmin", true);
+        firebaseFirestore.collection("Users").document(user.getUid()).set(map);
+    }
+
     private FirebaseUser setUserNames(FirebaseUser user) {
         String firstName = firstNameInput.getEditText().getText().toString();
         String lastName = lastNameInput.getEditText().getText().toString();
+
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(firstName + " " + lastName)
                 .build();
