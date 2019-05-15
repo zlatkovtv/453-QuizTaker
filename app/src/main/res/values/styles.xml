@@ -28,6 +28,7 @@
 
     <style name="Button.Center" parent="@android:style/Widget.Button">
         <item name="android:gravity">center</item>
+        <item name="android:elevation">4dp</item>
         <item name="android:textSize">@dimen/text_medium</item>
     </style>
 

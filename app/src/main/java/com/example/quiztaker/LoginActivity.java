@@ -15,35 +15,44 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * Activity for existing user login
+ */
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
-
     private TextInputLayout emailInput;
     private TextInputLayout passwordInput;
     private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Make sure this is before calling super.onCreate
         setTheme(R.style.AppTheme_NoActionBar);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         firebaseAuth = FirebaseAuth.getInstance();
-
         FirebaseUser loggedUser = firebaseAuth.getCurrentUser();
-        // Check if user is exists, and if so, redirect to home
         if(loggedUser != null) {
             navigateToHome();
         }
 
-        this.emailInput = findViewById(R.id.email);
-        this.passwordInput = findViewById(R.id.password);
-        this.progressBar = findViewById(R.id.progress_bar);
+        getViews();
         this.progressBar.setVisibility(ProgressBar.INVISIBLE);
     }
 
+    /**
+     * Gets views needed within the activity
+     */
+    private void getViews() {
+        this.emailInput = findViewById(R.id.email);
+        this.passwordInput = findViewById(R.id.password);
+        this.progressBar = findViewById(R.id.progress_bar);
+    }
+
+    /**
+     * Validates email and password and signs in
+     * @param view
+     */
     public void validateInput(View view) {
         progressBar.setVisibility(ProgressBar.VISIBLE);
         String email = emailInput.getEditText().getText().toString();
@@ -83,27 +92,39 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Signs in the FirebaseUser
+     * @param email The validated email of the user
+     * @param password The validated password of the user
+     */
     private void signIn(String email, String password) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-            if (task.isSuccessful()) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                navigateToHome();
-            } else {
+                if (task.isSuccessful()) {
+                    navigateToHome();
+                    return;
+                }
+
                 Toast.makeText(LoginActivity.this, "Authentication failed.",
                         Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
             }
-            }
         });
     }
 
+    /**
+     * Starts the Home Activity
+     */
     private void navigateToHome() {
         startActivity(new Intent(this, HomeActivity.class));
     }
 
+    /**
+     * Starts the Registeractivity
+     * @param view
+     */
     public void navigateToRegister(View view) {
         startActivity(new Intent(this, RegisterActivity.class));
     }

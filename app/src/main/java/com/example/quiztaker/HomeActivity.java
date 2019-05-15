@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -31,9 +32,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
-
     private DrawerLayout drawer;
     private Dialog myDialog;
     private ImageView profilePhoto;
@@ -42,7 +43,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Make sure this is before calling super.onCreate
         setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -96,8 +96,34 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * Tell all fragments to invoke their onBackPressed method
+     * @return If at least one fragment handles the event, return true, else false
+     */
+    private boolean tellFragments(){
+        boolean handled = false;
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for(Fragment f : fragments){
+            if(f != null && f instanceof BaseFragment)
+                handled = ((BaseFragment)f).onBackPressed();
+            if(handled) {
+                break;
+            }
+        }
+
+        return handled;
+    }
+
+    /**
+     * Passes on to active fragment. If event is not handled there, executes this logic
+     */
     @Override
     public void onBackPressed() {
+        boolean handled = tellFragments();
+        if(handled) {
+            return;
+        }
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
             myDialog.dismiss();
@@ -108,6 +134,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         else {
             popLogoutDialog();
         }
+    }
+
+    public BaseFragment getActiveFragment() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            return null;
+        }
+        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        return (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
 
     private void setDrawer() {
@@ -179,4 +213,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
     }
+
+
 }

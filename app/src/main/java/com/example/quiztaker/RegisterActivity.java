@@ -23,8 +23,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
-    private FirebaseAuth firebaseAuth;
+    private final boolean IS_ADMIN = false;
 
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore db;
     private TextInputLayout emailInput;
     private TextInputLayout firstNameInput;
     private TextInputLayout lastNameInput;
@@ -34,24 +36,32 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Make sure this is before calling super.onCreate
         setTheme(R.style.AppTheme_NoActionBar);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        getViews();
+        this.progressBar.setVisibility(ProgressBar.INVISIBLE);
+        this.firebaseAuth = FirebaseAuth.getInstance();
+        this.db = FirebaseFirestore.getInstance();
+    }
 
+    /**
+     * Gets views needed in this activity
+     */
+    private void getViews() {
         this.emailInput = findViewById(R.id.email);
         this.firstNameInput = findViewById(R.id.firstname);
         this.lastNameInput = findViewById(R.id.lastname);
         this.passwordInput = findViewById(R.id.password);
         this.confirmPasswordInput = findViewById(R.id.confirm_password);
-
         this.progressBar = findViewById(R.id.progress_bar);
-        this.progressBar.setVisibility(ProgressBar.INVISIBLE);
-
-        firebaseAuth = FirebaseAuth.getInstance();
     }
 
+    /**
+     * Creates a new FirebaseUser and logs in
+     * @param email The validated email
+     * @param password The validated password
+     */
     public void createAccount(String email, String password) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -60,15 +70,15 @@ public class RegisterActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     user = setUserNames(user);
-
                     addToDatabase(user);
+                    setUserRole(user);
                     navigateToHome();
-
-                } else {
-                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(ProgressBar.INVISIBLE);
+                    return;
                 }
+
+                Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                        Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
             }
         });
     }
@@ -86,24 +96,44 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseUser setUserNames(FirebaseUser user) {
         String firstName = firstNameInput.getEditText().getText().toString();
         String lastName = lastNameInput.getEditText().getText().toString();
-
+    /**
+     * Sets Firstname and Lastname of the FirebaseUser
+     * @param firstName
+     * @param lastName
+     */
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(firstName + " " + lastName)
                 .build();
-        user.updateProfile(profileUpdates)
+        firebaseAuth.getCurrentUser().updateProfile(profileUpdates)
         .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
             }
         });
-
-        return FirebaseAuth.getInstance().getCurrentUser();
     }
 
+    /**
+     * Creates a document in the Users collection with the "isAdmin" field
+     * @param user
+     */
+    private void setUserRole(FirebaseUser user) {
+        String userId = user.getUid();
+        Map<String, Object> userRole = new HashMap<>();
+        userRole.put("isAdmin", IS_ADMIN);
+        db.collection("Users").document(userId).set(userRole);
+    }
+
+    /**
+     * Navigates to the Home Activity
+     */
     private void navigateToHome() {
         startActivity(new Intent(this, HomeActivity.class));
     }
 
+    /**
+     * Validates email, names and passwords and logs in
+     * @param view
+     */
     public void validateInputs(View view) {
         progressBar.setVisibility(ProgressBar.VISIBLE);
         if (!validateEmail() || !validateNames() || !validatePasswords()) {
@@ -173,5 +203,11 @@ public class RegisterActivity extends AppCompatActivity {
         this.passwordInput.setError(null);
         this.confirmPasswordInput.setError(null);
         return true;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        startActivity(new Intent(this, LoginActivity.class));
     }
 }

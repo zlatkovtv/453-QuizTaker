@@ -2,7 +2,6 @@ package com.example.quiztaker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -11,11 +10,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quiztaker.models.QuizInfo;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.quiztaker.models.QuizOption;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class QuizQuestionCreator extends AppCompatActivity {
     private Button mQuit;
@@ -49,38 +49,63 @@ public class QuizQuestionCreator extends AppCompatActivity {
                 String inputfalseAnswer1 = mfalseAnswer1.getText().toString().trim();
                 String inputfalseAnswer2 = mfalseAnswer2.getText().toString().trim();
                 String inputfalseAnswer3 = mfalseAnswer3.getText().toString().trim();
-                String[] options  = new String[]{inputCorrectAnswer, inputfalseAnswer1, inputfalseAnswer2, inputfalseAnswer3};
+                String quizid;
+
+                //retrieves quizid from QuizCreator
+                if (savedInstanceState == null) {
+                    Bundle extras = getIntent().getExtras();
+                    if(extras == null) {
+                        quizid = null;
+                    } else {
+                        quizid = extras.getString("quizname");
+                    }
+                }
+                else {
+                    quizid = (String) savedInstanceState.getSerializable("quizname");
+                }
                 if (inputQuestion.equals("") || inputCorrectAnswer.equals("") || inputfalseAnswer1.equals("") || inputfalseAnswer2.equals("") || inputfalseAnswer3.equals("")) {
                     message = "Please fill out the information";
                 }
                 else {
                     count++;
-                    CollectionReference databaseQuizzes = database.collection("Quizzes");
-                    if (count <= 10) {
-                        QuizInfo info = new QuizInfo(inputQuestion, inputCorrectAnswer, inputfalseAnswer1, inputfalseAnswer2, inputfalseAnswer3);
-                        databaseQuizzes.add(info).addOnSuccessListener(documentReference -> {
-                        })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                    }
-                                });
-                      /*  QuizInfo optionInfo = new QuizInfo(options);
-                        databaseQuizzes.add(optionInfo).addOnSuccessListener(documentReference -> {
-                        })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                    }
-                                });*/
+                    CollectionReference ref1 = database.collection("Quizzes");
+                    QuizInfo info = new QuizInfo(inputQuestion);
+
+                    //Maps created to write data into collection
+                    Map<String, Object> answer1 = new HashMap<>();
+                    answer1.put("optionName", inputCorrectAnswer);
+                    answer1.put("isCorrect", true);
+
+                    Map<String, Object> answer2 = new HashMap<>();
+                    answer2.put("optionName", inputfalseAnswer1);
+                    answer2.put("isCorrect", false);
+
+                    Map<String, Object> answer3 = new HashMap<>();
+                    answer3.put("optionName", inputfalseAnswer2);
+                    answer3.put("isCorrect", false);
+
+                    Map<String, Object> answer4 = new HashMap<>();
+                    answer4.put("optionName", inputfalseAnswer3);
+                    answer4.put("isCorrect", false);
+
+                    ref1.document(quizid).collection("Questions").document("Question " + (count - 1)).set(info);
+                    ref1.document(quizid).collection("Questions").document("Question " + (count - 1)).collection("Options").document("Option 1").set(answer1);
+                    ref1.document(quizid).collection("Questions").document("Question " + (count - 1)).collection("Options").document("Option 2").set(answer2);
+                    ref1.document(quizid).collection("Questions").document("Question " + (count - 1)).collection("Options").document("Option 3").set(answer3);
+                    ref1.document(quizid).collection("Questions").document("Question " + (count - 1)).collection("Options").document("Option 4").set(answer4);
+                    if(count == 11) {
+                        mquestionNumber.setText(Integer.toString(count-1));
+                    }
+                    else{
                         mquestionNumber.setText(Integer.toString(count));
                         mquestion.getText().clear();
                         mcorrectAnswer.getText().clear();
                         mfalseAnswer1.getText().clear();
                         mfalseAnswer2.getText().clear();
                         mfalseAnswer3.getText().clear();
-                        message = "Question " +Integer.toString(count);
-                    } else {
+                    }
+                    message = "Question " + Integer.toString(count);
+                    if (count == 11) {
                         Intent intent = new Intent(QuizQuestionCreator.this, MainActivity.class);
                         startActivity(intent);
                         message = "Quiz saved successfully";

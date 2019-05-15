@@ -26,8 +26,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class QuizListFragment extends Fragment {
+/**
+ *
+ */
+public class QuizListFragment extends BaseFragment {
     private static final String TAG = "QuizListFragment";
     private RecyclerView mRecyclerView;
     private FloatingActionButton mfab;
@@ -43,6 +45,13 @@ public class QuizListFragment extends Fragment {
 
     }
 
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view =  inflater.inflate(R.layout.fragment_quiz_list, container, false);
@@ -123,5 +132,14 @@ public class QuizListFragment extends Fragment {
 
 
         return view;
+    }
+
+    /**
+     * Leave empty, as this is default fragment and the event needs to be handled by Home Activity
+     * @return
+     */
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 }
