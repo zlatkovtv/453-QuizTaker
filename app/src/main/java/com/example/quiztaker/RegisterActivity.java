@@ -69,16 +69,14 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
-                    user = setUserNames(user);
+                    setUserNames(user);
                     addToDatabase(user);
                     setUserRole(user);
                     navigateToHome();
-                    return;
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(ProgressBar.INVISIBLE);
                 }
-
-                Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(ProgressBar.INVISIBLE);
             }
         });
     }
@@ -93,18 +91,20 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseFirestore.collection("Users").document(user.getUid()).set(map);
     }
 
-    private FirebaseUser setUserNames(FirebaseUser user) {
+    private void setUserNames(FirebaseUser user) {
+        /**
+         * Sets Firstname and Lastname of the FirebaseUser
+         * @param firstName
+         * @param lastName
+         */
+
         String firstName = firstNameInput.getEditText().getText().toString();
         String lastName = lastNameInput.getEditText().getText().toString();
-    /**
-     * Sets Firstname and Lastname of the FirebaseUser
-     * @param firstName
-     * @param lastName
-     */
+
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(firstName + " " + lastName)
                 .build();
-        firebaseAuth.getCurrentUser().updateProfile(profileUpdates)
+        user.updateProfile(profileUpdates)
         .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

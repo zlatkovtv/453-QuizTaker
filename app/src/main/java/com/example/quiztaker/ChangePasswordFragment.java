@@ -68,6 +68,7 @@ public class ChangePasswordFragment extends Fragment {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()){
                                             dialog.dismiss();
+                                            getActivity().onBackPressed();
                                             Toast.makeText(view.getContext(), "Your password has been changed", Toast.LENGTH_SHORT).show();
                                         } else {
                                             dialog.dismiss();
