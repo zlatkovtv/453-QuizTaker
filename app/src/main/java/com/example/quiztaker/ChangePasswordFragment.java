@@ -14,13 +14,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class ChangePasswordFragment extends Fragment {
 
-    EditText newPassword, confirmNewPassword;
-    Button buttonChangePassword;
+    EditText newPassword, confirmNewPassword, currentPassword;
+    Button buttonChangePassword, buttonCancel;
     FirebaseAuth firebaseAuth;
     ProgressDialog dialog;
 
@@ -31,13 +33,12 @@ public class ChangePasswordFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        // Setup any handles to view objects here
-        // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
-        //oldPassword = view.findViewById(R.id.EditText_oldPassword);
+        //Toast.makeText(view.getContext(), "DEBUGGING", Toast.LENGTH_SHORT).show();
+        currentPassword = view.findViewById(R.id.EditText_currentPassword);
         newPassword = view.findViewById(R.id.EditText_newPassword);
         confirmNewPassword = view.findViewById(R.id.EditText_confirmNewPassword);
         buttonChangePassword = view.findViewById(R.id.Button_changePassword);
-        //email = view.findViewById(R.id.email);
+        buttonCancel = view.findViewById(R.id.Button_changePasswordCancel);
         dialog = new ProgressDialog(view.getContext());
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -47,10 +48,15 @@ public class ChangePasswordFragment extends Fragment {
             public void onClick(View v) {
                 if (user != null)
                 {
-                    //if (!email.getText().toString().equals(user.getEmail()))
-                        //Toast.makeText(view.getContext(), "Incorrrect Email.", Toast.LENGTH_SHORT).show();
-                    if (newPassword.getText().toString().equals("") || confirmNewPassword.getText().toString().equals(""))
-                        Toast.makeText(view.getContext(), "Missing field.", Toast.LENGTH_SHORT).show();
+                    if (!currentPassword.getText().toString().equals("")) {
+                        AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword.getText().toString());
+                        user.reauthenticate(credential);
+                    }
+
+                    if (newPassword.getText().toString().equals("") || confirmNewPassword.getText().toString().equals("") || currentPassword.getText().toString().equals(""))
+                        Toast.makeText(view.getContext(), "Missing field/s.", Toast.LENGTH_SHORT).show();
+                    else if (currentPassword.getText().toString().equals(newPassword.getText().toString()))
+                        Toast.makeText(view.getContext(), "Cannot update to the same password.", Toast.LENGTH_SHORT).show();
                     else if (!newPassword.getText().toString().equals(confirmNewPassword.getText().toString()))
                         Toast.makeText(view.getContext(), "Passwords Do Not Match.", Toast.LENGTH_SHORT).show();
                     else {
@@ -60,20 +66,25 @@ public class ChangePasswordFragment extends Fragment {
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        //AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), oldPassword.getText().toString());
-                                        //user.reauthenticate(credential);
                                         if (task.isSuccessful()){
                                             dialog.dismiss();
                                             Toast.makeText(view.getContext(), "Your password has been changed", Toast.LENGTH_SHORT).show();
                                         } else {
                                             dialog.dismiss();
                                             Log.e("TASK UNSUCCESSFUL", task.getException().toString());
-                                            Toast.makeText(view.getContext(), "Password could not be changed", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(view.getContext(), "Current password is incorrect", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
                     }
                 }
+            }
+        });
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
             }
         });
     }
