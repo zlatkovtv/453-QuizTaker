@@ -72,15 +72,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             profilePhoto.setImageResource(R.drawable.profile_icon);
                         else {
                             imageURL = document.getString("imageURL");
-                            Toast.makeText(HomeActivity.this, imageURL, Toast.LENGTH_LONG).show();
                             Glide.with(HomeActivity.this).load(imageURL).into(profilePhoto);
-                            /*
-                            Picasso.get()
-                                    .load(document.getString("imageURL"))
-                                    .fit()
-                                    .centerCrop()
-                                    .into(profilePhoto);
-                             */
+                            //Toast.makeText(HomeActivity.this, imageURL, Toast.LENGTH_LONG).show();
                         }
                         fistName.setText(document.getString("firstName"));
                         lastName.setText(document.getString("lastName"));

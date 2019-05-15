@@ -48,7 +48,6 @@ public class ChangeProfileFragment extends Fragment {
     private String mUri;
     private StorageTask uploadTask;
 
-    DatabaseReference reference;
     DocumentReference documentReference;
     FirebaseUser user;
 
@@ -85,11 +84,6 @@ public class ChangeProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (user != null) {
-                    /* UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(firstName +" " +lastName)
-                            .setPhotoUri(Uri.parse(mUri))
-                            .build();
-                    user.updateProfile(profileUpdates); */
                     if (!firstName.getText().toString().equals("")) {
                         documentReference = FirebaseFirestore.getInstance().collection("Users").document(user.getUid());
                         HashMap<String, Object> map = new HashMap<>();
@@ -194,19 +188,12 @@ public class ChangeProfileFragment extends Fragment {
                         Uri downloadUri = task.getResult();
                         mUri = downloadUri.toString();
 
-                        //reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
-                        //documentReference = FirebaseFirestore.getInstance().collection("Users").document(user.getUid());
-                        //HashMap<String, Object> map = new HashMap<>();
-                        //map.put("imageURL", mUri);
-                        //reference.updateChildren(map);
-                        //documentReference.update(map);
-
-                        Toast.makeText(getContext(), "SUCCESS: " +mUri, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "SUCCESS: Image Selected", Toast.LENGTH_LONG).show();
                         progressDialog.dismiss();
 
                     } else {
                         //Uri downloadUri = task.getResult();
-                        Toast.makeText(getContext(), "FAILED", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "FAILED: Could not update profile pic", Toast.LENGTH_LONG).show();
                         progressDialog.dismiss();
                     }
                 }
@@ -231,9 +218,11 @@ public class ChangeProfileFragment extends Fragment {
             imageUri = data.getData();
 
             if (uploadTask != null && uploadTask.isInProgress()) {
-                Toast.makeText(getContext(), imageUri.toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), imageUri.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "uploading", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(getContext(), imageUri.toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), imageUri.toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "uploading complete", Toast.LENGTH_LONG).show();
                 profilePhoto.setImageURI(imageUri);
                 uploadImage();
             }

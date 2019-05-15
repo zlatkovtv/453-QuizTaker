@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class ChangePasswordFragment extends Fragment {
 
     EditText newPassword, confirmNewPassword, currentPassword;
-    Button buttonChangePassword;
+    Button buttonChangePassword, buttonCancel;
     FirebaseAuth firebaseAuth;
     ProgressDialog dialog;
 
@@ -33,11 +33,12 @@ public class ChangePasswordFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Toast.makeText(view.getContext(), "DEBUGGING", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(view.getContext(), "DEBUGGING", Toast.LENGTH_SHORT).show();
         currentPassword = view.findViewById(R.id.EditText_currentPassword);
         newPassword = view.findViewById(R.id.EditText_newPassword);
         confirmNewPassword = view.findViewById(R.id.EditText_confirmNewPassword);
         buttonChangePassword = view.findViewById(R.id.Button_changePassword);
+        buttonCancel = view.findViewById(R.id.Button_changePasswordCancel);
         dialog = new ProgressDialog(view.getContext());
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -77,6 +78,13 @@ public class ChangePasswordFragment extends Fragment {
                                 });
                     }
                 }
+            }
+        });
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
             }
         });
     }
