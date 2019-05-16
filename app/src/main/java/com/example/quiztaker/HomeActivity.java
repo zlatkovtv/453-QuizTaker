@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,9 +30,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.squareup.picasso.Picasso;
 import java.util.List;
 
+/**
+ * The home activity is what the user sees when they login. Serves for inflating fragments in it.
+ */
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
     private DrawerLayout drawer;
     private Dialog myDialog;
@@ -192,6 +193,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    /**
+     * Pops a confirmation dialog before logging out.
+     */
     private void popLogoutDialog() {
         new AlertDialog.Builder(this)
             .setTitle("Are you sure you want to log out?")
@@ -208,6 +212,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             .show();
     }
 
+    /**
+     * Sets the layout to the dialog view
+     * @param layoutID The ID of the layout to be set
+     */
     private void changePopupWindow (int layoutID) {
         myDialog.setContentView(layoutID);
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

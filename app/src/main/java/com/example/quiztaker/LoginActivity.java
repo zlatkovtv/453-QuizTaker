@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.quiztaker.utilities.ActivityHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -54,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param view
      */
     public void validateInput(View view) {
+        ActivityHelper.hideKeyboard(this);
         progressBar.setVisibility(ProgressBar.VISIBLE);
         String email = emailInput.getEditText().getText().toString();
         String password = passwordInput.getEditText().getText().toString();

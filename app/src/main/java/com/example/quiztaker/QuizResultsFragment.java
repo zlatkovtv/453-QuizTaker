@@ -9,6 +9,10 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
+/**
+ * Fragment that is inflated when a user completes the quiz.
+ * Purpose is to show results - how many they got correct.
+ */
 public class QuizResultsFragment extends BaseFragment implements View.OnClickListener {
     private boolean[] results;
     private boolean[] correct;
@@ -69,19 +73,19 @@ public class QuizResultsFragment extends BaseFragment implements View.OnClickLis
             return getResources().getString(R.string.quiz_results_bad);
         }
 
-        if(correct <= 0.5) {
+        if(percent <= 0.5) {
             return getResources().getString(R.string.quiz_results_ok);
         }
 
-        if(correct <= 0.99) {
+        if(percent <= 0.99) {
             return getResources().getString(R.string.quiz_results_good);
         }
 
-        if(correct <= 1) {
+        if(percent <= 1) {
             return getResources().getString(R.string.quiz_results_excellent);
         }
 
-        return null;
+        return "Quiz completed!";
     }
 
     /**

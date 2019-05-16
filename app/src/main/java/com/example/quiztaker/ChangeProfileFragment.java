@@ -40,6 +40,10 @@ import java.util.HashMap;
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * Fragment to change profile details, such as names and profile picture.
+ * Accessible from drawer
+ */
 public class ChangeProfileFragment extends Fragment {
 
     StorageReference storageReference;

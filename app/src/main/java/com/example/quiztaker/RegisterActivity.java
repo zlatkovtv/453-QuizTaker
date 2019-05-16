@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.quiztaker.utilities.ActivityHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -20,6 +21,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Activity for signing up new users
+ */
 public class RegisterActivity extends AppCompatActivity {
     private final boolean IS_ADMIN = true;
 
@@ -125,6 +129,7 @@ public class RegisterActivity extends AppCompatActivity {
      * @param view
      */
     public void validateInputs(View view) {
+        ActivityHelper.hideKeyboard(this);
         progressBar.setVisibility(ProgressBar.VISIBLE);
         if (!validateEmail() || !validateNames() || !validatePasswords()) {
             progressBar.setVisibility(ProgressBar.INVISIBLE);

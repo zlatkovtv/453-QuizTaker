@@ -19,6 +19,9 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * Fragment to change password, accessible from the drawer
+ */
 public class ChangePasswordFragment extends Fragment {
 
     EditText newPassword, confirmNewPassword, currentPassword;

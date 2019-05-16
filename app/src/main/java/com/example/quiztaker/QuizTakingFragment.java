@@ -31,7 +31,11 @@ import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
-
+/**
+ * Fragment that is inflated when user selects the quiz.
+ * This is a wizard, which takes the user through all the questions,
+ * and then inflates the Results fragment.
+ */
 public class QuizTakingFragment extends BaseFragment {
     private String quizName;
     private CollectionReference questionsRef;
@@ -79,6 +83,9 @@ public class QuizTakingFragment extends BaseFragment {
         return view;
     }
 
+    /**
+     * Gets all of the questions for the quiz and stores them in a global list.
+     */
     private void getQuestions() {
         questionsRef
             .get()
@@ -109,7 +116,7 @@ public class QuizTakingFragment extends BaseFragment {
     }
 
     /**
-     * Gets the options of the next unanswered question, in a random order
+     * Gets the options of the next unanswered question, in a random order. Uses a global cursor.
      */
     private void getNextOptions() {
         progressBar.setVisibility(ProgressBar.VISIBLE);
