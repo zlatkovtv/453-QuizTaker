@@ -2,7 +2,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:padding="@dimen/default_page_padding"
     android:background="@color/colorPrimary">
 
     <LinearLayout
@@ -12,12 +11,14 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".LoginActivity"
         android:orientation="vertical"
+        android:layout_margin="@dimen/default_page_padding"
         android:layout_gravity="center_vertical">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             app:errorEnabled="true">
 
             <android.support.design.widget.TextInputEditText

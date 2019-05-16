@@ -14,8 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Launcher">
         <activity android:name=".HomeActivity"  />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".LoginActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".QuizCreator" />
         <activity android:name=".QuizQuestionCreator" />
         <activity android:name=".MainActivity">
