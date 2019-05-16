@@ -15,15 +15,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
-    private final boolean IS_ADMIN = false;
+    private final boolean IS_ADMIN = true;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
@@ -70,8 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     setUserNames(user);
-                    addToDatabase(user);
-                    setUserRole(user);
+                    setUserFields(user);
                     navigateToHome();
                 } else {
                     Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -79,16 +76,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void addToDatabase(FirebaseUser user) {
-        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        Map<String, Object> map = new HashMap<>();
-        map.put("firstName", firstNameInput.getEditText().getText().toString());
-        map.put("lastName", lastNameInput.getEditText().getText().toString());
-        map.put("imageURL", "default");
-        map.put("isAdmin", true);
-        firebaseFirestore.collection("Users").document(user.getUid()).set(map);
     }
 
     private void setUserNames(FirebaseUser user) {
@@ -116,11 +103,14 @@ public class RegisterActivity extends AppCompatActivity {
      * Creates a document in the Users collection with the "isAdmin" field
      * @param user
      */
-    private void setUserRole(FirebaseUser user) {
+    private void setUserFields(FirebaseUser user) {
         String userId = user.getUid();
-        Map<String, Object> userRole = new HashMap<>();
-        userRole.put("isAdmin", IS_ADMIN);
-        db.collection("Users").document(userId).set(userRole);
+        Map<String, Object> map = new HashMap<>();
+        map.put("isAdmin", IS_ADMIN);
+        map.put("firstName", firstNameInput.getEditText().getText().toString());
+        map.put("lastName", lastNameInput.getEditText().getText().toString());
+        map.put("imageURL", "default");
+        db.collection("Users").document(userId).set(map);
     }
 
     /**
