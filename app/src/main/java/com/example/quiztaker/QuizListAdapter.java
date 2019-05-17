@@ -14,11 +14,17 @@ import com.example.quiztaker.models.QuizData;
 
 import java.util.List;
 
+/**
+ * Adapter for quiz list in Quiz List Fragment
+ */
 public class QuizListAdapter extends RecyclerView.Adapter<QuizListAdapter.QuizListViewHolder> {
     private Context mContext;
     private List<QuizData> mQuizList;
     private ItemClickListener mListener;
 
+    /**
+     * Constructor
+     */
     public QuizListAdapter(Context context, List<QuizData> quizList, ItemClickListener listener)
     {
         this.mContext = context;
@@ -39,6 +45,10 @@ public class QuizListAdapter extends RecyclerView.Adapter<QuizListAdapter.QuizLi
         quizListViewHolder.mTitle.setText(mQuizList.get(i).getQuizName());
     }
 
+    /**
+     * Displays toast using a given string
+     * @param str   string to display
+     */
     private void showToast(String str)
     {
         Toast toast = Toast.makeText(mContext, str, Toast.LENGTH_SHORT);
@@ -50,6 +60,7 @@ public class QuizListAdapter extends RecyclerView.Adapter<QuizListAdapter.QuizLi
         return mQuizList.size();
     }
 
+    //Listener interface for when a quiz item is clicked
     public interface ItemClickListener
     {
         void OnClick(View view, int position);

@@ -16,6 +16,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+/**
+ * Fragment that provides controls to start or delete a quiz
+ */
 public class QuizMenuFragment extends BaseFragment {
     private static final String TAG = "QuizMenuFragment";
     private LinearLayout mLinearLayout;
@@ -30,6 +33,7 @@ public class QuizMenuFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        //Gets and saves info passed from old fragment
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             this.quizID = bundle.getString("ID");
@@ -48,6 +52,7 @@ public class QuizMenuFragment extends BaseFragment {
 
         mTextViewTitle.setText(quizTitle);
 
+        //Set up listener for start button
         mButtonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +70,7 @@ public class QuizMenuFragment extends BaseFragment {
             }
         });
 
+        //Set up listener for delete button
         mButtonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,12 +96,14 @@ public class QuizMenuFragment extends BaseFragment {
         return view;
     }
 
+    //Disables buttons to not be clickable
     public void buttonsSetEnabled(boolean bool)
     {
         mButtonStart.setEnabled(bool);
         mButtonDelete.setEnabled(bool);
     }
 
+    //Invoked when user presses back button to go to popped fragment from stack.
     @Override
     public boolean onBackPressed() {
         getActivity().getSupportFragmentManager().popBackStack();

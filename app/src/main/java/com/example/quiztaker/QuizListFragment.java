@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Fragment to get and display list of quizzes
  */
 public class QuizListFragment extends BaseFragment {
     private static final String TAG = "QuizListFragment";
@@ -45,13 +45,6 @@ public class QuizListFragment extends BaseFragment {
 
     }
 
-    /**
-     *
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view =  inflater.inflate(R.layout.fragment_quiz_list, container, false);
@@ -65,6 +58,7 @@ public class QuizListFragment extends BaseFragment {
 
         mQuizList = new ArrayList<QuizData>();
 
+        //Retrieves quiz information from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Quizzes")
                 .get()
@@ -72,13 +66,14 @@ public class QuizListFragment extends BaseFragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 mQuizList.add(new QuizData(document.getId(), document.getString("quizTitle"), document.getString("quizCreator")));
                             }
+
+                            //Set each quiz card to open quiz menu for the specified quiz
                             QuizListAdapter.ItemClickListener listener = (view, position) -> {
                                 Fragment frag = new QuizMenuFragment();
-                                Bundle args = new Bundle();
+                                Bundle args = new Bundle(); //Quiz info to pass to new fragment
                                 args.putString("ID", mQuizList.get(position).getID());
                                 args.putString("Title", mQuizList.get(position).getQuizName());
                                 frag.setArguments(args);
@@ -99,6 +94,7 @@ public class QuizListFragment extends BaseFragment {
                     }
                 });
 
+        //Get user info to decide whether to show fab
         FirebaseUser loggedUser = firebaseAuth.getCurrentUser();
         db.collection("Users")
                 .document(loggedUser.getUid())
@@ -115,6 +111,7 @@ public class QuizListFragment extends BaseFragment {
                                 mfab.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
+                                        //Starts QuizQuestionCreator activity
                                         Intent intent = new Intent(getActivity(), QuizCreator.class);
                                         startActivity(intent);
                                     }
