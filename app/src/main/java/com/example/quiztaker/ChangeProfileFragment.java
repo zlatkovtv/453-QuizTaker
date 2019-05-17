@@ -3,7 +3,6 @@ package com.example.quiztaker;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,13 +20,9 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -209,23 +204,38 @@ public class ChangeProfileFragment extends Fragment {
                         Uri downloadUri = task.getResult();
                         mUri = downloadUri.toString();
 
-                        Toast.makeText(getContext(), "SUCCESS: Image Selected", Toast.LENGTH_LONG).show();
+                        //delete previous user image from firebase storage
+                        documentReference = FirebaseFirestore.getInstance().collection("Users").document(user.getUid());
+                        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot profileData = task.getResult();
+                                    if (!profileData.getString("imageURL").equals("default")) {
+                                        StorageReference previousPhoto = FirebaseStorage.getInstance().getReferenceFromUrl(profileData.getString("imageURL"));
+                                        previousPhoto.delete();
+                                    }
+                                }
+                            }
+                        });
+
+                        Toast.makeText(getContext(), "SUCCESS: Image Uploaded", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
 
                     } else {
-                        Toast.makeText(getContext(), "FAILED: Could not update profile pic", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "FAILED: Could not update profile pic", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 }
             });
         } else {
-            Toast.makeText(getContext(), "No image selected", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "No image selected", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -238,13 +248,12 @@ public class ChangeProfileFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK
             && data != null && data.getData() != null) {
             imageUri = data.getData();
 
             if (uploadTask != null && uploadTask.isInProgress()) {
-                Toast.makeText(getContext(), "uploading", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "uploading", Toast.LENGTH_SHORT).show();
             } else {
                 profilePhoto.setImageURI(imageUri);
                 uploadImage();
