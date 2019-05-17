@@ -77,12 +77,10 @@ public class QuizListFragment extends BaseFragment {
                                 mQuizList.add(new QuizData(document.getId(), document.getString("quizTitle"), document.getString("quizCreator")));
                             }
                             QuizListAdapter.ItemClickListener listener = (view, position) -> {
-                                //Code to start quiz
-                                Toast.makeText(getContext(), mQuizList.get(position).getQuizName(), Toast.LENGTH_SHORT).show();
-
-                                Fragment frag = new QuizTakingFragment();
+                                Fragment frag = new QuizMenuFragment();
                                 Bundle args = new Bundle();
                                 args.putString("ID", mQuizList.get(position).getID());
+                                args.putString("Title", mQuizList.get(position).getQuizName());
                                 frag.setArguments(args);
                                 getActivity()
                                         .getSupportFragmentManager()
