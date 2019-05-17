@@ -28,7 +28,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textAlignment="center"
-                android:text="TextView"
+                android:text="@string/textview"
                 android:textSize="18sp"
                 android:textStyle="italic|bold">
 

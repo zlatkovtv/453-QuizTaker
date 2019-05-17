@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:inputType="textEmailAddress"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:focusable="true"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:inputType="text"
-                android:hint="First name" />
+                android:hint="@string/first_name" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:inputType="text"
-                android:hint="Last name" />
+                android:hint="@string/last_name" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:inputType="textPassword"
-                android:hint="Password" />
+                android:hint="@string/password" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:inputType="textPassword"
-                android:hint="Confirm password"/>
+                android:hint="@string/confirm_password"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -88,7 +88,7 @@
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:text="Register"
+            android:text="@string/register"
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
             android:onClick="validateInputs"/>

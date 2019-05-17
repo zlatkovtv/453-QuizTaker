@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal = "true"
-        android:text="Enter Your Quiz Name:"
+        android:text="@string/enter_your_quiz_name"
         android:layout_marginTop="120dp"
         android:textColor="#F8F8F8"
         android:textSize="40sp"
@@ -38,7 +38,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="140dp"
-        android:text=" Cancel " />
+        android:text="@string/cancel" />
 
     <Button
         android:id="@+id/save"
@@ -48,5 +48,5 @@
         android:layout_alignParentRight ="true"
         android:layout_marginRight="40dp"
         android:layout_marginTop="140dp"
-        android:text="  Save  " />
+        android:text="@string/save" />
 </RelativeLayout>

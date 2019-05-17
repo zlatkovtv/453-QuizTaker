@@ -36,7 +36,6 @@ public class ChangePasswordFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        //Toast.makeText(view.getContext(), "DEBUGGING", Toast.LENGTH_SHORT).show();
         currentPassword = view.findViewById(R.id.EditText_currentPassword);
         newPassword = view.findViewById(R.id.EditText_newPassword);
         confirmNewPassword = view.findViewById(R.id.EditText_confirmNewPassword);

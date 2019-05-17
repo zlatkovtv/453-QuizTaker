@@ -130,25 +130,31 @@ public class ChangeProfileFragment extends Fragment {
         });
     }
 
+    /**
+     * Reloads the current Activity to update the views holding profile data
+     */
     private void refreshActivity() {
         getActivity().finish();
         startActivity(getActivity().getIntent());
     }
 
+    /**
+     * loads the imageURL from the database of the current user into the ImageView, profilePhoto
+     */
     private void loadProfilePhoto() {
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DocumentReference documentReference = firebaseFirestore.collection("Users").document(user.getUid());
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        DocumentReference userID = firebaseFirestore.collection("Users").document(user.getUid());
+        userID.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null) {
-                        if (document.getString("imageURL").equals("default"))
+                    DocumentSnapshot profileData = task.getResult();
+                    if (profileData != null) {
+                        if (profileData.getString("imageURL").equals("default"))
                             profilePhoto.setImageResource(R.drawable.profile_icon);
                         else {
-                            Glide.with(getContext()).load(document.getString("imageURL")).into(profilePhoto);
+                            Glide.with(getContext()).load(profileData.getString("imageURL")).into(profilePhoto);
                         }
                     }
                 }
@@ -156,6 +162,9 @@ public class ChangeProfileFragment extends Fragment {
         });
     }
 
+    /**
+     * Opens up the camera roll to select an image
+     */
     private void loadImageFromCamera() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -163,12 +172,20 @@ public class ChangeProfileFragment extends Fragment {
         startActivityForResult(intent, IMAGE_REQUEST);
     }
 
+    /**
+     * Gets the file extension of the Uri of a selected image passed into this method
+     * @param uri The uri of a selected image
+     * @return The file extension of the selected image (eg: .png, .jpeg, etc)
+     */
     private String getFileExtension(Uri uri) {
         ContentResolver contentResolver = getContext().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
+    /**
+     * Uploads the selected image from Camera Roll to Firebase Storage
+     */
     private void uploadImage() {
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Uploading");
@@ -196,7 +213,6 @@ public class ChangeProfileFragment extends Fragment {
                         progressDialog.dismiss();
 
                     } else {
-                        //Uri downloadUri = task.getResult();
                         Toast.makeText(getContext(), "FAILED: Could not update profile pic", Toast.LENGTH_LONG).show();
                         progressDialog.dismiss();
                     }
@@ -213,6 +229,12 @@ public class ChangeProfileFragment extends Fragment {
         }
     }
 
+    /**
+     * Method after image is selected from Camera Roll
+     * @param requestCode The type of request we're responding to
+     * @param resultCode If the operation successful or not
+     * @param data Data of the image selected
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -222,11 +244,8 @@ public class ChangeProfileFragment extends Fragment {
             imageUri = data.getData();
 
             if (uploadTask != null && uploadTask.isInProgress()) {
-                //Toast.makeText(getContext(), imageUri.toString(), Toast.LENGTH_LONG).show();
                 Toast.makeText(getContext(), "uploading", Toast.LENGTH_LONG).show();
             } else {
-                //Toast.makeText(getContext(), imageUri.toString(), Toast.LENGTH_LONG).show();
-                //Toast.makeText(getContext(), "uploading complete", Toast.LENGTH_LONG).show();
                 profilePhoto.setImageURI(imageUri);
                 uploadImage();
             }

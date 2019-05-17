@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:background="@drawable/rounded_top_corner"
         android:gravity="center"
-        android:text="Change Profile"
+        android:text="@string/change_profile"
         android:textColor="@color/colorSecondary"
         android:textSize="@dimen/text_big"
         android:textStyle="bold" />
@@ -43,14 +43,14 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:hint="First Name" />
+        android:hint="@string/first_name" />
 
     <EditText
         android:id="@+id/editText_changeLastName"
         android:layout_width="275dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:hint="Last Name" />
+        android:hint="@string/last_name" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -64,14 +64,14 @@
             android:layout_width="140dp"
             android:layout_height="50dp"
             android:layout_marginEnd="5dp"
-            android:text="CANCEL" />
+            android:text="@string/cancel" />
 
         <Button
             android:id="@+id/Button_changeProfileConfirm"
             android:layout_width="140dp"
             android:layout_height="50dp"
             android:layout_marginStart="5dp"
-            android:text="CONFIRM" />
+            android:text="@string/confirm" />
     </LinearLayout>
 
 </LinearLayout>

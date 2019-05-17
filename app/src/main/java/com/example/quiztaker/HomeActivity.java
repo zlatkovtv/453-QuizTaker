@@ -47,8 +47,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        setDrawer();
-        setNavigationView();
+        setupDrawer();
+        setupNavigationView();
         getProfileFromDatabase();
         myDialog = new Dialog(new ContextThemeWrapper(this, R.style.DialogSlideAnim));
         myDialog.setOnDismissListener(this);
@@ -59,6 +59,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * Fetches profile data from database for the current user
+     */
     public void getProfileFromDatabase() {
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -74,7 +77,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         else {
                             imageURL = document.getString("imageURL");
                             Glide.with(HomeActivity.this).load(imageURL).into(profilePhoto);
-                            //Toast.makeText(HomeActivity.this, imageURL, Toast.LENGTH_LONG).show();
                         }
                         fistName.setText(document.getString("firstName"));
                         lastName.setText(document.getString("lastName"));
@@ -84,6 +86,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    /**
+     * This method will be invoked when the dialog is dismissed
+     * @param dialog The dialog that was dismissed will be passed into the method
+     */
     @Override
     public void onDismiss(DialogInterface dialog) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -111,7 +117,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
         }
-
         return handled;
     }
 
@@ -145,7 +150,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
 
-    private void setDrawer() {
+    /**
+     * Sets up the App Drawer
+     */
+    private void setupDrawer() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -155,7 +163,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
     }
 
-    private void setNavigationView() {
+    /**
+     * Sets up the Navigation View for the App Drawer
+     */
+    private void setupNavigationView() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
