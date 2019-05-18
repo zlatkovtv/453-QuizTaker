@@ -19,30 +19,26 @@
     <Button
         android:id="@+id/quiz_menu_button_start"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/colorSecondary"
+        android:layout_height="64dp"
         android:text="@string/start_quiz"
-        android:textSize="32sp"
-        android:gravity="center"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginVertical="25dp"
+        android:layout_marginBottom="10dp"
+        style="@style/Button.Center.Primary"
         />
 
     <Button
         android:id="@+id/quiz_menu_button_delete"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/delete_quiz"
-        android:textAlignment="center"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/colorSecondary"
-        android:layout_gravity="bottom"
-        android:textSize="32sp"
-        android:gravity="center"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginVertical="80dp"
+        style="@style/Button.Center.Primary"
+        />
+    <Button
+        android:id="@+id/quiz_menu_button_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="@string/cancel_lowercase"
+        style="@style/Button.Center.Primary"
         />
 
 </LinearLayout>

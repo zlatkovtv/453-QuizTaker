@@ -23,7 +23,7 @@ public class QuizMenuFragment extends BaseFragment {
     private static final String TAG = "QuizMenuFragment";
     private LinearLayout mLinearLayout;
     private TextView mTextViewTitle;
-    private Button mButtonStart, mButtonDelete;
+    private Button mButtonStart, mButtonDelete, mButtonCancel;
     private String quizID;
     private String quizTitle;
 
@@ -48,6 +48,7 @@ public class QuizMenuFragment extends BaseFragment {
 
         mButtonStart = view.findViewById(R.id.quiz_menu_button_start);
         mButtonDelete = view.findViewById(R.id.quiz_menu_button_delete);
+        mButtonCancel = view.findViewById(R.id.quiz_menu_button_cancel);
         mTextViewTitle = view.findViewById(R.id.quiz_menu_title);
 
         mTextViewTitle.setText(quizTitle);
@@ -90,6 +91,13 @@ public class QuizMenuFragment extends BaseFragment {
                                         .commit();
                             }
                         });
+            }
+        });
+
+        mButtonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
             }
         });
 

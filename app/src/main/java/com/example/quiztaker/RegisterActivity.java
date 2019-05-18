@@ -75,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
                     setUserFields(user);
                     navigateToHome();
                 } else {
-                    Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(ProgressBar.INVISIBLE);
                 }
             }

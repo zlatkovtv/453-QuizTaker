@@ -109,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                Toast.makeText(LoginActivity.this, "Authentication failed.",
+                Toast.makeText(LoginActivity.this, task.getException().getMessage(),
                         Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
             }

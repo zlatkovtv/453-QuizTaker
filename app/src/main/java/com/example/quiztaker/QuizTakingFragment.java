@@ -166,10 +166,12 @@ public class QuizTakingFragment extends BaseFragment {
         Button button = new Button(wrapper, null, 0);
         button.setText(optionText);
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, getResources().getDisplayMetrics());
-        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, height);
+        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         lp.setMargins(0, 0, 0, 20);
         button.setElevation(8);
         button.setLayoutParams(lp);
+        button.setMinHeight(height);
+        button.setPadding(30, 30, 30, 30);
 
         if(isCorrect) {
             button.setOnClickListener(new Button.OnClickListener() {

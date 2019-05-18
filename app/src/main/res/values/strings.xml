@@ -46,6 +46,7 @@
     <string name="confirm_password_caps">CONFIRM PASSWORD</string>
     <string name="confirm">CONFIRM</string>
     <string name="cancel">CANCEL</string>
+    <string name="cancel_lowercase">Cancel</string>
     <string name="enter_your_quiz_name">Enter Your Quiz Name:</string>
     <string name="save">SAVE</string>
     <string name="questions_and_answers_header">Please fill in questions and answers below:</string>
