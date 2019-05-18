@@ -84,27 +84,15 @@ public class ChangeProfileFragment extends Fragment {
             public void onClick(View v) {
                 if (user != null) {
                     if (!firstName.getText().toString().equals("")) {
-                        documentReference = FirebaseFirestore.getInstance().collection("Users").document(user.getUid());
-                        HashMap<String, Object> map = new HashMap<>();
-                        map.put("firstName", firstName.getText().toString());
-                        documentReference.update(map);
-
+                        updateDatabase("firstName", firstName.getText().toString());
                         refreshActivity();
                     }
                     if (!lastName.getText().toString().equals("")) {
-                        documentReference = FirebaseFirestore.getInstance().collection("Users").document(user.getUid());
-                        HashMap<String, Object> map = new HashMap<>();
-                        map.put("lastName", lastName.getText().toString());
-                        documentReference.update(map);
-
+                        updateDatabase("lastName", lastName.getText().toString());
                         refreshActivity();
                     }
                     if (mUri != null) {
-                        documentReference = FirebaseFirestore.getInstance().collection("Users").document(user.getUid());
-                        HashMap<String, Object> map = new HashMap<>();
-                        map.put("imageURL", mUri);
-                        documentReference.update(map);
-
+                        updateDatabase("imageURL", mUri);
                         refreshActivity();
                     }
                     if (firstName.getText().toString().equals("") && lastName.getText().toString().equals("") && mUri == null) {
@@ -123,6 +111,18 @@ public class ChangeProfileFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+    }
+
+    /**
+     * Updates a specified field of the database with the given value
+     * @param field The field name
+     * @param value Value of the field
+     */
+    public void updateDatabase(String field, Object value) {
+        documentReference = FirebaseFirestore.getInstance().collection("Users").document(user.getUid());
+        HashMap<String, Object> map = new HashMap<>();
+        map.put(field, value);
+        documentReference.update(map);
     }
 
     /**
